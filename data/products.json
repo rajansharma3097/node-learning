@@ -1,1 +1,14 @@
-[{"title":"Do Epic Shit!!"},{"title":"Atomic Habits"},{"title":"Mindset"},{"title":"Flow"}]
+[
+  {
+    "title": "Do Epic Shit!!",
+    "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/41+grDTP2FL.jpg",
+    "description": "Do Epic Shit!!",
+    "price": "4.99"
+  },
+  {
+    "title": "Atomic Habits",
+    "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/91S+nNHdHSL.jpg",
+    "description": "An Easy & Proven Way to Build Good Habits & Break Bad Ones",
+    "price": "11.99"
+  }
+]
