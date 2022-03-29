@@ -1,14 +1,14 @@
-const { validationResult } = require("express-validator");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+const { validationResult } = require('express-validator');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
-const User = require("../models/user");
+const User = require('../models/user');
 
 exports.signup = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("Validation failed.");
+      const error = new Error('Validation failed.');
       error.statusCode = 422;
       error.data = errors.array();
       throw error;
@@ -25,7 +25,7 @@ exports.signup = async (req, res, next) => {
     });
     const result = await user.save();
 
-    res.status(201).json({ message: "User Created!", userId: result._id });
+    res.status(201).json({ message: 'User Created!', userId: result._id });
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
@@ -41,7 +41,7 @@ exports.login = async (req, res, next) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      const error = new Error("A user with this email could not be found.");
+      const error = new Error('A user with this email could not be found.');
       error.statusCode = 401;
       throw error;
     }
@@ -49,21 +49,23 @@ exports.login = async (req, res, next) => {
     const isEqual = await bcrypt.compare(password, user.password);
 
     if (!isEqual) {
-      const error = new Error("Wrong Password!");
+      const error = new Error('Wrong Password!');
       error.statusCode = 401;
       throw error;
     }
 
     const token = jwt.sign(
       { email: user.email, userId: user._id.toString() },
-      "somesupersecret",
-      { expiresIn: "1h" }
+      'somesupersecret',
+      { expiresIn: '1h' }
     );
     res.status(200).json({ token, userId: user._id.toString() });
+    return;
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
     }
+    return err;
     next(err);
   }
 };
@@ -72,7 +74,7 @@ exports.getStatus = async (req, res, next) => {
   try {
     const user = await User.findById(req.userId);
     if (!user) {
-      const error = new Error("User not found!");
+      const error = new Error('User not found!');
       error.statusCode = 404;
       throw error;
     }
@@ -89,7 +91,7 @@ exports.updateStatus = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("Validation failed.");
+      const error = new Error('Validation failed.');
       error.statusCode = 422;
       error.data = errors.array();
       throw error;
@@ -97,13 +99,13 @@ exports.updateStatus = async (req, res, next) => {
     const newStatus = req.body.status;
     const user = await User.findById(req.userId);
     if (!user) {
-      const error = new Error("User not found!");
+      const error = new Error('User not found!');
       error.statusCode = 404;
       throw error;
     }
     user.status = newStatus;
     await user.save();
-    res.status(200).json({ message: "User Updated." });
+    res.status(200).json({ message: 'User Updated.' });
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
